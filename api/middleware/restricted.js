@@ -1,5 +1,5 @@
-module.exports = (req, res, next) => {
-  next();
+const restricted = (req, res, next) => {
+  next()
   /*
     IMPLEMENT
 
@@ -12,3 +12,6 @@ module.exports = (req, res, next) => {
       the response body should include a string exactly as follows: "token invalid".
   */
 };
+
+
+module.exports =  restricted;
