@@ -13,6 +13,11 @@ router.post('/register', async (req, res, next) => {
   const salt = bcrypt.genSaltSync(8)
   const hash = bcrypt.hashSync(password, salt)
   try{
+    const foundUser = await db('users').where('username', username)
+    if (foundUser.length > 0 ) {
+      next(new Error("username taken"))
+    }
+    console.log('found user', foundUser)
     const [id] = await db('users').insert({ username, password: hash })
     console.log('user added', id)
     res.status(201).json({ username, id, password: hash })
