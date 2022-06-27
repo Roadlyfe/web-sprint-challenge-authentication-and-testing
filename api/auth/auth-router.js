@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const { reset } = require('nodemon');
 const { restricted } = ('../middleware/restricted.js')
+const { JWT_SECRET } = require('../../index')
 const db = require('../../data/dbConfig')
 const jwt = require('jsonwebtoken')
 
@@ -65,7 +66,7 @@ router.post('/login', async (req, res, next) => {
     !bcrypt.compareSync(password, foundUser[0].password)) {
       next(new Error("invalid credentials"))
     } 
-    const token = jwt.sign({username}, process.env.JWT_SECRET)
+    const token = jwt.sign({username}, JWT_SECRET)
     res.status(201).json({message: `welcome, ${username}`, token })
   } catch (err) {
     next(err)

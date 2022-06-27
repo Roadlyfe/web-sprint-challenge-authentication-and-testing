@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require('../../index')
 
 const restricted = (req, res, next) => {
   console.log(req.headers.authorization)
@@ -6,7 +7,7 @@ const restricted = (req, res, next) => {
     res.status(400).json({message: "token required"})
   }
   const token = req.headers.authorization.split(' ')[1]
-  const verified = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) =>{
+  const verified = jwt.verify(token, JWT_SECRET, (err, decoded) =>{
     if(err) {
       res.status(400).json({message: "token invalid"})
     }
