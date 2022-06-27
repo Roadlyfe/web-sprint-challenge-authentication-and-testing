@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require('../../index')
+const JWT_SECRET = 'shh'
+
 
 const restricted = (req, res, next) => {
   console.log(req.headers.authorization)
