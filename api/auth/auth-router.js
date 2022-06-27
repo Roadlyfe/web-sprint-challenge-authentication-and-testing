@@ -6,6 +6,9 @@ const db = require('../../data/dbConfig')
 
 router.post('/register', async (req, res, next) => {
   const { username, password } = req.body
+  if(!username || !password) {
+    next(new Error("username and password required"))
+  }
   console.log('register', username, password)
   const salt = bcrypt.genSaltSync(8)
   const hash = bcrypt.hashSync(password, salt)
