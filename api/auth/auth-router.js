@@ -59,17 +59,17 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
   const { username, password } = req.body
   if(!username || !password) {
-    next(new Error("username and password required"))
+    next({ status: 400, message: "username and password required" })
   }
   try{
     const foundUser = await db('users').where('username', username)
     if (foundUser.length === 0   ||
     !bcrypt.compareSync(password, foundUser[0].password)) {
       res.status(400)
-      next({message: "invalid credentials", status: 400 })
+      next({ status: 400, message: "invalid credentials" })
     } 
     const token = jwt.sign({username}, JWT_SECRET)
-    res.status(201).json({message: `welcome, ${username}`, token })
+    res.status(200).json({message: `welcome, ${username}`, token })
   } catch (err) {
     next(err)
   }
