@@ -2,11 +2,21 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const { reset } = require('nodemon');
 const { restricted } = ('../middleware/restricted.js')
+const db = require('../../data/dbConfig')
 
-router.post('/register', (req, res, next) => {
+router.post('/register', async (req, res, next) => {
   const { username, password } = req.body
-  const hash = bcrypt.hashSync(password, 8)
-
+  console.log('register', username, password)
+  const salt = bcrypt.genSaltSync(8)
+  const hash = bcrypt.hashSync(password, salt)
+  try{
+    const [id] = await db('users').insert({ username, password: hash })
+    console.log('user added', id)
+    res.status(201).json({ username, id, password: hash })
+  } catch (err) {
+    console.error("register error", err)
+    next(err)
+  }
   //res.end('implement register, please!');
   /*
     IMPLEMENT
@@ -36,7 +46,9 @@ router.post('/register', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  
+  const { password } = req.body
+  //if(bcrypt.compareSync)
+
   //res.json('login')
   //res.end('implement login, please!');
   /*
