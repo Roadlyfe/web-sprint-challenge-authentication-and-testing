@@ -66,7 +66,7 @@ router.post('/login', async (req, res, next) => {
     if (foundUser.length === 0   ||
     !bcrypt.compareSync(password, foundUser[0].password)) {
       res.status(400)
-      next(new Error("invalid credentials"))
+      next({message: "invalid credentials", status: 400 })
     } 
     const token = jwt.sign({username}, JWT_SECRET)
     res.status(201).json({message: `welcome, ${username}`, token })
