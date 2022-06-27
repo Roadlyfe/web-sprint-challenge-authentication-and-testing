@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const { reset } = require('nodemon');
 const { restricted } = ('../middleware/restricted.js')
 const db = require('../../data/dbConfig')
+const jwt = require('jsonwebtoken')
 
 router.post('/register', async (req, res, next) => {
   const { username, password } = req.body
@@ -53,8 +54,24 @@ router.post('/register', async (req, res, next) => {
   */
 });
 
-router.post('/login', (req, res, next) => {
-  const { password } = req.body
+router.post('/login', async (req, res, next) => {
+  const { username, password } = req.body
+  if(!username || !password) {
+    next(new Error("username and password required"))
+  }
+  try{
+    const foundUser = await db('users').where('username', username)
+    if (foundUser.length === 0   ||
+    !bcrypt.compareSync(password, foundUser[0].password)) {
+      next(new Error("invalid credentials"))
+    } 
+    const token = jwt.sign({username}, process.env.JWT_SECRET)
+    res.status(201).json({message: `welcome, ${username}`, token })
+  } catch (err) {
+    next(err)
+  }
+
+
   //if(bcrypt.compareSync)
 
   //res.json('login')
