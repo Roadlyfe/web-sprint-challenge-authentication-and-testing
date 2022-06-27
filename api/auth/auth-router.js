@@ -36,7 +36,8 @@ router.post('/register', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  res.json('login')
+  
+  //res.json('login')
   //res.end('implement login, please!');
   /*
     IMPLEMENT
