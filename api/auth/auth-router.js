@@ -1,9 +1,12 @@
+const router = require('express').Router();
+const bcrypt = require('bcryptjs')
 const { reset } = require('nodemon');
 const { restricted } = ('../middleware/restricted.js')
-const router = require('express').Router();
 
 router.post('/register', (req, res, next) => {
-  res.json('register')
+  const { username, password } = req.body
+  const hash = bcrypt.hashSync(password, 8)
+
   //res.end('implement register, please!');
   /*
     IMPLEMENT
