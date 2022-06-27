@@ -10,7 +10,6 @@ const restricted = (req, res, next) => {
     if(err) {
       res.status(400).json({message: "token invalid"})
     }
-
   } )
   next()
   /*
