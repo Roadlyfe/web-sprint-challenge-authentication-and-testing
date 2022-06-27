@@ -69,7 +69,7 @@ router.post('/login', async (req, res, next) => {
       next({ status: 400, message: "invalid credentials" })
     } 
     const token = jwt.sign({username}, JWT_SECRET)
-    res.status(200).json({message: `welcome, ${username}`, token })
+    res.status(200).json({ message: `welcome, ${username}`, token })
   } catch (err) {
     next(err)
   }
