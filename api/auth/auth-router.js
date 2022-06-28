@@ -1,34 +1,53 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const { reset } = require('nodemon');
-const JWT_SECRET = 'shh'
+const { tokenMaker } = require('./tokenMaker')
+//const JWT_SECRET = 'shh'
 
 const db = require('../../data/dbConfig')
-const jwt = require('jsonwebtoken')
-console.log('jtw secret', JWT_SECRET)
+//const jwt = require('jsonwebtoken')
+//console.log('jtw secret', JWT_SECRET)
 
 
 router.post('/register', async (req, res, next) => {
-  const { username, password } = req.body
-  if(!username || !password) {
-    next(new Error("username and password required"))
-  }
-  console.log('register', username, password)
-  const salt = bcrypt.genSaltSync(8)
-  const hash = bcrypt.hashSync(password, salt)
-  try{
-    const foundUser = await db('users').where('username', username)
-    if (foundUser.length > 0 ) {
-      next(new Error("username taken"))
+  try {
+    const { username, password } = req.body
+    const alreadyRegistered = username ? await User.findBy({ username }).first() : null
+    if (!username || !password) {
+      res.status(400).json({ message: "username and password required" })
+    } else if (alreadyRegistered) {
+      res.status(400).json({ message: "username taken" })
+    } else {
+      const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS)
+      const newUser = await User.add({ username, password: hash });
+      res.status(201).json(newUser)
     }
-    console.log('found user', foundUser)
-    const [id] = await db('users').insert({ username, password: hash })
-    console.log('user added', id)
-    res.status(201).json({ username, id, password: hash })
   } catch (err) {
-    console.error("register error", err)
     next(err)
   }
+});
+
+// router.post('/register', async (req, res, next) => {
+//   const { username, password } = req.body
+//   if(!username || !password) {
+//     next(new Error("username and password required"))
+//   }
+//   console.log('register', username, password)
+//   const salt = bcrypt.genSaltSync(8)
+//   const hash = bcrypt.hashSync(password, salt)
+//   try{
+//     const foundUser = await db('users').where('username', username)
+//     if (foundUser.length > 0 ) {
+//       next(new Error("username taken"))
+//     }
+//     console.log('found user', foundUser)
+//     const [id] = await db('users').insert({ username, password: hash })
+//     console.log('user added', id)
+//     res.status(201).json({ username, id, password: hash })
+//   } catch (err) {
+//     console.error("register error", err)
+//     next(err)
+//   }
   //res.end('implement register, please!');
   /*
     IMPLEMENT
@@ -55,21 +74,21 @@ router.post('/register', async (req, res, next) => {
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
-});
+//});
 
 router.post('/login', async (req, res, next) => {
   const { username, password } = req.body
-  if(!username || !password) {
+  if (!username || !password) {
     next({ status: 400, message: "username and password required" })
   }
-  try{
+  try {
     const foundUser = await db('users').where('username', username)
-    if (foundUser.length === 0   ||
-    !bcrypt.compareSync(password, foundUser[0].password)) {
+    if (foundUser.length === 0 ||
+      !bcrypt.compareSync(password, foundUser[0].password)) {
       res.status(400)
       next({ status: 400, message: "invalid credentials" })
-    } 
-    const token = jwt.sign({username}, JWT_SECRET)
+    }
+    const token = jwt.sign({ username }, JWT_SECRET)
     res.status(200).json({ message: `welcome, ${username}`, token })
   } catch (err) {
     next(err)
