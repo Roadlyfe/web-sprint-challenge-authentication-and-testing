@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../../index');
+const { JWT_SECRET } = require('../../data/secrets');
 
  function tokenMaker(user) {
     const payload = {
