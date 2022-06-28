@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const { tokenMaker } = require('./tokenMaker')
 //const JWT_SECRET = 'shh'
 const { BCRYPT_ROUNDS } = require('../../data/secrets')
-const db = require('../../data/dbConfig')
+//const db = require('../../data/dbConfig')
 //const jwt = require('jsonwebtoken')
 //console.log('jtw secret', JWT_SECRET)
 
@@ -80,7 +80,7 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', (req, res, next) => {
   if (!req.body.username || !req.body.password) {
     res.status(401).json({ message: "username and password required" })
-    return;
+    return
   }
   const { username, password } = req.body;
   User.findBy({ username })

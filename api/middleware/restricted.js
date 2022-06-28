@@ -3,19 +3,31 @@ const JWT_SECRET = require('../../data/secrets')
 
 
 const restricted = (req, res, next) => {
-  console.log(req.headers.authorization)
-  if(!req.headers.authorization) {
-    res.status(401).json({message: "token required"})
-  }
   const token = req.headers.authorization
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if(err) {
-      res.status(401).json({message: "token invalid"})
-    } else {
-      req.decodeToken = decoded
-      next()
-    }
+  if (!token) {
+      return next({ status: 401, message: "token required" })
+  }
+  jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
+      if (err) {
+          next({ status: 401, message: "token invalid" })
+      } else {
+          req.decodedToken = decodedToken
+          next()
+      }
   })
+  
+  //console.log(req.headers.authorization)
+  // if(!token) {
+  //   res.status(401).json({message: "token required"})
+  // }
+  // jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
+  //   if(err) {
+  //     res.status(401).json({message: "token invalid"})
+  //   } else {
+  //     req.decodedToken = decodedToken
+  //     next()
+  //   }
+  // })
 
 
   //.split(' ')[1]
