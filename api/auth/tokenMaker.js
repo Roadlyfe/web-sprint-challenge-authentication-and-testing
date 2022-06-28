@@ -8,7 +8,7 @@ const { JWT_SECRET } = require('../../data/secrets');
 
     };
     const options = {
-        expiresIn: '6h',
+        expiresIn: '1d',
     };
     return jwt.sign(payload, JWT_SECRET, options);
 }
