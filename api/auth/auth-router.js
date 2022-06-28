@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 //const { reset } = require('nodemon');
 const { tokenMaker } = require('./tokenMaker')
 //const JWT_SECRET = 'shh'
-
+const { BCRYPT_ROUNDS } = require('../../data/secrets')
 const db = require('../../data/dbConfig')
 //const jwt = require('jsonwebtoken')
 //console.log('jtw secret', JWT_SECRET)
