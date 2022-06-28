@@ -1,21 +1,24 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = 'shh'
+const JWT_SECRET = require('../../data/secrets')
 
 
 const restricted = (req, res, next) => {
   console.log(req.headers.authorization)
   if(!req.headers.authorization) {
-    res.status(400).json({message: "token required"})
+    res.status(401).json({message: "token required"})
   }
-  const token = req.headers.authorization.split(' ')[1]
-  const verified = jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  const token = req.headers.authorization
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if(err) {
-      res.status(400).json({message: "token invalid"})
+      res.status(401).json({message: "token invalid"})
     } else {
+      req.decodeToken = decoded
       next()
     }
   })
 
+
+  //.split(' ')[1]
   /*
     IMPLEMENT
 
