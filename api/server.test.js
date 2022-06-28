@@ -60,7 +60,7 @@ describe('GET /jokes', () => {
     })
 
     test('if token exists in authorization header', async () => {
-        let result = await request(server).get('/api/jokes').set('Authorization', generateToken({ id: 1, username: 'adam' }))
+        let result = await request(server).get('/api/jokes').set('Authorization', tokenMaker({ id: 1, username: 'adam' }))
         expect(result.status).toBe(200)
     })
 })

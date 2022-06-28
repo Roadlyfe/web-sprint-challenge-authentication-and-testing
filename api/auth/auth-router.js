@@ -28,27 +28,7 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-// router.post('/register', async (req, res, next) => {
-//   const { username, password } = req.body
-//   if(!username || !password) {
-//     next(new Error("username and password required"))
-//   }
-//   console.log('register', username, password)
-//   const salt = bcrypt.genSaltSync(8)
-//   const hash = bcrypt.hashSync(password, salt)
-//   try{
-//     const foundUser = await db('users').where('username', username)
-//     if (foundUser.length > 0 ) {
-//       next(new Error("username taken"))
-//     }
-//     console.log('found user', foundUser)
-//     const [id] = await db('users').insert({ username, password: hash })
-//     console.log('user added', id)
-//     res.status(201).json({ username, id, password: hash })
-//   } catch (err) {
-//     console.error("register error", err)
-//     next(err)
-//   }
+
 //res.end('implement register, please!');
 /*
   IMPLEMENT
@@ -95,24 +75,6 @@ router.post('/login', (req, res, next) => {
       }
     })
 });
-
-// router.post('/login', async (req, res, next) => {
-//   const { username, password } = req.body
-//   if (!username || !password) {
-//     next({ status: 400, message: "username and password required" })
-//   }
-//   try {
-//     const foundUser = await db('users').where('username', username)
-//     if (foundUser.length === 0 ||
-//       !bcrypt.compareSync(password, foundUser[0].password)) {
-//       res.status(400)
-//       next({ status: 400, message: "invalid credentials" })
-//     }
-//     const token = jwt.sign({ username }, JWT_SECRET)
-//     res.status(200).json({ message: `welcome, ${username}`, token })
-//   } catch (err) {
-//     next(err)
-//   }
 
 
   //if(bcrypt.compareSync)
