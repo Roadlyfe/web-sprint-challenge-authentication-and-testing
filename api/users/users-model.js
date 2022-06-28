@@ -4,12 +4,12 @@ function find() {
     return db('users')
 }
 
-function findBy() {
-    return db('users').where(filter)
+function findBy(filter) {
+    return db('users').select('username', 'password', 'id').where(filter)
 }
 
-function findById() {
-    return db('users').where('user_id', user_id).first()
+function findById(id) {
+    return db('users').select('username', 'password', 'id').where('user_id', id).first()
 
 }
 
