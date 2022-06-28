@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const { reset } = require('nodemon');
-const { restricted } = ('../middleware/restricted.js')
 const JWT_SECRET = 'shh'
 
 const db = require('../../data/dbConfig')
 const jwt = require('jsonwebtoken')
 console.log('jtw secret', JWT_SECRET)
+
+
 router.post('/register', async (req, res, next) => {
   const { username, password } = req.body
   if(!username || !password) {
