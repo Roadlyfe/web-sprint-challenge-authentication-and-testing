@@ -4,6 +4,7 @@ const JWT_SECRET = require('../../data/secrets')
 
 const restricted = (req, res, next) => {
   // const token = req.headers.authorization.replace('Bearer ', '')
+  const token = req.headers.authorization
   if (!token) {
       return next({ status: 401, message: "token required" })
   }
