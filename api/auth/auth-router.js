@@ -1,13 +1,8 @@
 const router = require('express').Router();
 const User = require('../users/users-model')
 const bcrypt = require('bcryptjs')
-//const { reset } = require('nodemon');
 const { tokenMaker } = require('./tokenMaker')
-//const JWT_SECRET = 'shh'
 const { BCRYPT_ROUNDS } = require('../../data/secrets')
-//const db = require('../../data/dbConfig')
-//const jwt = require('jsonwebtoken')
-//console.log('jtw secret', JWT_SECRET)
 
 
 router.post('/register', async (req, res, next) => {
@@ -29,7 +24,6 @@ router.post('/register', async (req, res, next) => {
 });
 
 
-//res.end('implement register, please!');
 /*
   IMPLEMENT
   You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -76,11 +70,6 @@ router.post('/login', (req, res, next) => {
     })
 });
 
-
-  //if(bcrypt.compareSync)
-
-  //res.json('login')
-  //res.end('implement login, please!');
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.

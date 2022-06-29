@@ -23,13 +23,7 @@ describe('POST /auth/register', () => {
         let res = await request(server).post('/api/auth/register').send({ username: 'lisa' });
         expect(res.body.message).toBe("username and password required");
      })
-    // test('If properly registered', async () => {
-    //   let res = await request(server).post('/api/auth/register').send({ username: 'marge', password: 'simpson' });
-    //   expect(res.body.username).toBe("marge");
-    //   expect(res.body).toHaveProperty('id')
-    //   expect(res.body).toHaveProperty('username')
-    //   expect(res.body).toHaveProperty('password')
-    //  })
+    
     test('If missing username', async () => {
         let res = await request(server).post('/api/auth/register').send({ password: '1234' });
         expect(res.body.message).toBe("username and password required");
@@ -41,11 +35,7 @@ describe('POST /auth/login', () => {
         let res = await request(server).post('/api/auth/login').send({ username: 'Homer' });
         expect(res.body.message).toBe("username and password required");
     })
-    // test('If incorrect username or password is passed in', async () => {
-    //     let res = await request(server).post('/api/auth/login').send({ username: 'bart', password: 'simpson' });
-    //     expect(res.body.message).toBe("invalid credentials");
-    //     expect(res.status).toBe(401)
-    // })
+
     test('If missing username', async () => {
       let res = await request(server).post('/api/auth/login').send({ username: '', password: 1234 });
       expect(res.body.message).toBe("username and password required");
